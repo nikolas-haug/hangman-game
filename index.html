@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hangman Game</title>
+</head>
+<body>
+
+    <div id="box">
+        new words go here
+    </div>
+
+    <script type="text/javascript">
+
+        //create array of animals
+        var animals = [
+            "emu",
+            "kookaburra",
+            "kangaroo",
+            "wallaby",
+            "koala",
+            "platypus",
+            "echidna",
+            "pademelon"
+        ];
+
+        //select a random animal after game is initiated\
+        var chosenAnimal = animals[Math.floor(Math.random() * animals.length)];
+
+        //make an array that will store the chosen animal
+        var answerArray = [];
+        //hide the animal name from the user with dashes equal to the length of the word
+        for(var i = 0; i < chosenAnimal.length; i++) {
+            answerArray[i] = "_";
+        }
+
+        //create variable for letters remaining to be picked by user
+        var lettersRemaining = chosenAnimal.length;
+
+        //keypress begins gameplay
+        document.onkeyup = function(event) {
+            var userGuess = event.key;
+            console.log(userGuess);
+            //the game begins if user presses 'p'
+            if(userGuess === "Enter") {
+                //display new hidden word
+                var wordBox = document.getElementById("box");
+                wordBox.innerHTML = answerArray.join(" ");
+            } else {
+                //create another loop to update the game
+                for(var j = 0; j < chosenAnimal.length; j++) {
+                    //check if the user's guess matches any of the letters in the current array
+                    if(chosenAnimal[j] === userGuess) {
+                        answerArray[j] = userGuess;
+                        lettersRemaining -= 1;
+                        box.innerHTML = answerArray.join(" ");
+                        //check if wrong letter and detract points from user
+                    } else {
+                        console.log("wrong");
+                    }
+                }
+            }
+        }
+
+
+
+        
+
+        //create the game loop - what happens after the first keyup
+        //USING A WHILE LOOP
+        // while(lettersRemaining > 0) {
+        //     //show user the unguessed word on the page
+        //     var wordBox = document.getElementById("box");
+        //     box.innerHTML = answer.join(" ");
+        //     //get a guess from user
+        //     // var guess = prompt("Guess a letter!");
+        //     if(guess === null) {
+        //         //exit the game loop
+        //         break;
+        //     } else if(guess.length !== 1) {
+        //         alert("Please enter a single letter");
+        //     } else {
+        //         //create another loop to update the game
+        //         for(var j = 0; j < chosenAnimal.length; j++) {
+        //             //check if the user's guess matches any of the letters in the current array
+        //             if(chosenAnimal[j] === guess) {
+        //                 answer[j] = guess;
+        //                 lettersRemaining -= 1;
+        //             }
+        //         }
+        //     }
+        //     //end of the game loop
+        // }
+        // box.innerHTML = answer.join(" ");
+        // alert("good job, the answer was: " + chosenAnimal + "!");
+
+        // var box = document.getElementById("box");
+        // // box.innerHTML = answer;
+        // box.innerHTML = answer.join(" ");
+
+
+
+    </script>
+
+    
+    
+</body>
+</html>
