@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hangman Game</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+    <h1>Hangman - Australian Animals</h1>
     <div id="box">
-        new words go here
+        <h3>Press ENTER to start</h3>
     </div>
+    <h4>guesses remaining</h4>
+    <h5>letters already guessed</h5>
+    <p id="guesses"></p>
+
 
     <script type="text/javascript">
 
@@ -26,7 +32,12 @@
             "pademelon"
         ];
 
-        //select a random animal after game is initiated\
+        //create other variables for DOM selection
+
+        //create LETTERS GUESSED variables / GUESSES remaining
+        var lettersGuessed = [];
+        
+        //select a random animal after game is initiated
         var chosenAnimal = animals[Math.floor(Math.random() * animals.length)];
 
         //make an array that will store the chosen animal
@@ -36,33 +47,75 @@
             answerArray[i] = "_";
         }
 
-        //create variable for letters remaining to be picked by user
-        var lettersRemaining = chosenAnimal.length;
+        console.log(chosenAnimal);
 
-        //keypress begins gameplay
+        //keypress event that starts the game
         document.onkeyup = function(event) {
-            var userGuess = event.key;
-            console.log(userGuess);
-            //the game begins if user presses 'p'
-            if(userGuess === "Enter") {
+            var startButton = event.key;
+            console.log(startButton);
+            if(startButton === "Enter") {
                 //display new hidden word
                 var wordBox = document.getElementById("box");
                 wordBox.innerHTML = answerArray.join(" ");
-            } else {
-                //create another loop to update the game
+                //call the gameMode function to initialize gameplay
+                gameMode();
+            } 
+        }
+
+        //create separate function for game loop
+        function gameMode() {
+            document.onkeyup = function(event) {
+                var userGuess = event.key;
+                console.log(userGuess);
+                //make separate function for this to keep the loop separate
                 for(var j = 0; j < chosenAnimal.length; j++) {
-                    //check if the user's guess matches any of the letters in the current array
                     if(chosenAnimal[j] === userGuess) {
+                    
                         answerArray[j] = userGuess;
-                        lettersRemaining -= 1;
                         box.innerHTML = answerArray.join(" ");
-                        //check if wrong letter and detract points from user
+                        lettersGuessed.push(userGuess);
+                        document.getElementById("guesses").textContent = lettersGuessed.join(" ");
+                        // return
                     } else {
-                        console.log("wrong");
+                        //check to see if the letter is already in the array
+                        if(lettersGuessed[j] === userGuess) {
+                            lettersGuessed.push(userGuess);
+                            document.getElementById("guesses").textContent = lettersGuessed.join(" ");
+                            // return
+                        }
                     }
                 }
             }
         }
+
+        //create variable for letters remaining to be picked by user
+        //  var lettersRemaining = chosenAnimal.length;
+
+        //keypress begins gameplay
+        //press ANY key or SPECIFIC key
+        // document.onkeyup = function(event) {
+        //     var userGuess = event.key;
+        //     console.log(userGuess);
+        //     //the game begins if user presses 'p'
+        //     if(userGuess === "Enter") {
+        //         //display new hidden word
+        //         var wordBox = document.getElementById("box");
+        //         wordBox.innerHTML = answerArray.join(" ");
+        //     } else {
+        //         //create another loop to update the game
+        //         for(var j = 0; j < chosenAnimal.length; j++) {
+        //             //check if the user's guess matches any of the letters in the current array
+        //             if(chosenAnimal[j] === userGuess) {
+        //                 answerArray[j] = userGuess;
+        //                 // lettersRemaining -= 1;
+        //                 box.innerHTML = answerArray.join(" ");
+        //                 //check if wrong letter and detract points from user
+        //             } else {
+        //                 console.log("wrong");
+        //             }
+        //         }
+        //     }
+        // }
 
 
 
