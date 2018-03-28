@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hangman - Redo</title>
+    <title>Hangman</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <h1>Hangman - Australian Animals</h1>
     <div>
-        <h3>Press ENTER to start</h3>
+        <h3 id="start">Press ENTER to start</h3>
         <h2>Current Word</h2>
         <h3 id="current-word"></h3>
     </div>
@@ -32,18 +32,19 @@
             "koala",
             "platypus",
             "echidna",
-            "pademelon"
+            "pademelon",
+            "wombat"
         ];
 
     //empty arrays for LETTERS GUESSED and THE CURRENT WORD
     var lettersGuessed = [];
-
+    //empty array for the current randomly selected word
     var guessingWord = [];
 
     //variable for remaining attempts
     // var remainingAttempts = 10;
 
-    //variable for the current word's index - EMPTY
+    //global variable for the current word's index - EMPTY
     var currentWordIndex;
 
     //variable to check the status of the game
@@ -51,6 +52,8 @@
 
 
 // ========================================================================
+// FUNCTIONS
+//=========================================================================
 
    //function to clear variables and START game
    function startGame() {
@@ -62,6 +65,7 @@
        //clear the other arrays / variables
        lettersGuessed = [];
 
+       //separate array to store the current word randomly selected
        guessingWord = [];
 
        remainingAttempts = 5;
@@ -77,16 +81,23 @@
    }
 
    function resetDisplay() {
-       //display the current word with blanks
+       //CLEAR THE PRESS ENTER SCREEN
+       document.getElementById("start").innerText = "";
+       //clear the space and display the current word with blanks
        document.getElementById("current-word").innerText = "";
        for(var j = 0; j < guessingWord.length; j++) {
            document.getElementById("current-word").innerText += guessingWord[j];
        }
+       //show the remaining attempts the player has to guess the word
        document.getElementById("attempts").innerText = remainingAttempts;
+       //display the lettersGuessed array - which begins empty
        document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
-       //reset for when guesses are empty ?
+       //reset for when guesses are empty 
        if(remainingAttempts < 1) {
-           startGame();
+            //FIX THIS SO THE GAME PAUSES AND PROMPTS THE PLAYER FOR A RESET
+            //This restarts the game loop
+            document.getElementById("start").innerText = "Press Enter to start a new game";
+            complete = true;
        }
    }
 
@@ -97,24 +108,22 @@
     // };
 
     function makeGuess(letter) {
-        //ADD THIS BIT OF CODE ELSEWHERE
-        // if(remainingAttempts > 0) {
-
-        // }
+        //if letter chosen by player is not in the letters already guessed array, then add to it - and then evaluate the letter in relation to the chosen word
         if(lettersGuessed.indexOf(letter) === -1) {
             lettersGuessed.push(letter);
             evaluateGuess(letter);
         }
+        //check for a win and update the display with current variable values
         checkSolution();
         resetDisplay();
     }
 
-    //find current word's letters and replace the blanks in display
+    //if word not already picked, find current word's letters and replace the blanks in display with chosen letter
     function evaluateGuess(letter) {
-        //make an empty array to store word indexes in
+        //make an empty array to store word indexes in - HELPS SOLVE THE MULTIPLE LETTERS PROBLEM
         var indexes = [];
 
-        //loop through word to find indexes of letter guessed
+        //loop through word to find ALL indexes of letter guessed
         for(var k = 0; k < animals[currentWordIndex].length; k++) {
             if(animals[currentWordIndex][k] === letter) {
                 indexes.push(k);
@@ -133,6 +142,7 @@
 
     //check if the word has been solved
     function checkSolution() {
+        //if there are no more blanks in the array, restart the game
         if(guessingWord.indexOf(" _ ") === -1) {
             startGame();
         }
@@ -140,15 +150,18 @@
 
     //event listener for the keypress functionality
     document.onkeyup = function(event) {
-        // var userKey = event.key;
+        var userKey = event.key;
 
-        //insert the if statement for the END of the game to reset
-        //use a defined global variable set to false initially
-        // if(complete) {
+        // FIX BUG HERE
+        // if(userKey === "Enter") {
+        //     startGame();
         //     resetDisplay();
-        //     complete = false;
         // }
-        
+
+        if(complete && userKey === "Enter") {
+            startGame();
+            complete = false;
+        }
         //otherwise listen for keypresses between A and Z
         if(event.keyCode >= 65 && event.keyCode <= 90) {
             // console.log(userKey);
@@ -158,12 +171,6 @@
 
     //TEMPORARY CALLED FUNCTIONS TO TEST FUNCTIONALITY
     startGame();
-    resetDisplay();
-    // resetDisplay();
-
-
-
-    
     
     </script>
     
