@@ -4,24 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Hangman Game</title>
+    <title>Hangman - Redo</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <h1>Hangman - Australian Animals</h1>
-    <div id="box">
+    <div>
         <h3>Press ENTER to start</h3>
+        <h2>Current Word</h2>
+        <h3 id="current-word"></h3>
     </div>
     <h4>guesses remaining</h4>
+    <h4 id="attempts"></h4>
     <h5>letters already guessed</h5>
-    <p id="guesses"></p>
-
+    <p id="letters-guessed"></p>
 
     <script type="text/javascript">
-
-        //create array of animals
-        var animals = [
+    
+    //make the GLOBAL variables
+    //create the global array of animal words to randomly select
+    var animals = [
             "emu",
             "kookaburra",
             "kangaroo",
@@ -32,132 +35,111 @@
             "pademelon"
         ];
 
-        //create other variables for DOM selection
+    //empty arrays for LETTERS GUESSED and THE CURRENT WORD
+    var lettersGuessed = [];
 
-        //create LETTERS GUESSED variables / GUESSES remaining
-        var lettersGuessed = [];
-        
-        //select a random animal after game is initiated
-        var chosenAnimal = animals[Math.floor(Math.random() * animals.length)];
+    var guessingWord = [];
 
-        //make an array that will store the chosen animal
-        var answerArray = [];
-        //hide the animal name from the user with dashes equal to the length of the word
-        for(var i = 0; i < chosenAnimal.length; i++) {
-            answerArray[i] = "_";
+    //variable for remaining attempts
+    var remainingAttempts = 10;
+
+    //variable for the current word's index - EMPTY
+    var currentWordIndex;
+
+   //function to clear variables and START game
+   function startGame() {
+       //use a random number to assign a value to the currentWordIndex using the length of the animals array
+       currentWordIndex = Math.floor(Math.random() * (animals.length));
+
+       //clear the other arrays
+       lettersGuessed = [];
+
+       guessingWord = [];
+
+       //make the guessingWord and clear the letters
+       for(var i = 0; i < animals[currentWordIndex].length; i++) {
+           guessingWord.push(" _ ");
+       }
+       //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
+       // TO DO
+
+   }
+
+   function resetDisplay() {
+       //display the current word with blanks
+       document.getElementById("current-word").innerText = "";
+       for(var j = 0; j < guessingWord.length; j++) {
+           document.getElementById("current-word").innerText += guessingWord[j];
+       }
+       document.getElementById("attempts").innerText = remainingAttempts;
+       document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
+       //reset for when guesses are empty ?
+    //    if(remainingAttempts <= 0)
+   }
+
+    //FUNCTION FOR UPDATING THE HANGMAN IMAGE if I choose to include it - you would need to add a MAX TRIES variable if so
+    // Updates the image depending on how many guesses
+    // function updateHangmanImage() {
+    //     document.getElementById("hangmanImage").src = "assets/images/" + (maxTries - remainingGuesses) + ".png";
+    // };
+
+    function makeGuess(letter) {
+        //ADD THIS BIT OF CODE ELSEWHERE
+        // if(remainingAttempts > 0) {
+
+        // }
+        if(lettersGuessed.indexOf(letter) === -1) {
+            lettersGuessed.push(letter);
+            evaluateGuess(letter);
         }
+        resetDisplay();
+    }
 
-        console.log(chosenAnimal);
+    //find current word's letters and replace the blanks in display
+    function evaluateGuess(letter) {
+        //make an empty array to store word indexes in
+        var indexes = [];
 
-        //keypress event that starts the game
-        document.onkeyup = function(event) {
-            var startButton = event.key;
-            console.log(startButton);
-            if(startButton === "Enter") {
-                //display new hidden word
-                var wordBox = document.getElementById("box");
-                wordBox.innerHTML = answerArray.join(" ");
-                //call the gameMode function to initialize gameplay
-                gameMode();
-            } 
-        }
-
-        //create separate function for game loop
-        function gameMode() {
-            document.onkeyup = function(event) {
-                var userGuess = event.key;
-                console.log(userGuess);
-                //make separate function for this to keep the loop separate
-                for(var j = 0; j < chosenAnimal.length; j++) {
-                    if(chosenAnimal[j] === userGuess) {
-                    
-                        answerArray[j] = userGuess;
-                        box.innerHTML = answerArray.join(" ");
-                        lettersGuessed.push(userGuess);
-                        document.getElementById("guesses").textContent = lettersGuessed.join(" ");
-                        // return
-                    } else {
-                        //check to see if the letter is already in the array
-                        if(lettersGuessed[j] === userGuess) {
-                            lettersGuessed.push(userGuess);
-                            document.getElementById("guesses").textContent = lettersGuessed.join(" ");
-                            // return
-                        }
-                    }
-                }
+        //loop through word to find indexes of letter guessed
+        for(var k = 0; k < animals[currentWordIndex].length; k++) {
+            if(animals[currentWordIndex][k] === letter) {
+                indexes.push(k);
             }
         }
+        //if no matching indexes remove an attempt 
+        if(indexes.length <= 0) {
+            remainingAttempts--;
+        } else {
+            //loop through the word and replace the " _ " with letters
+            for(var l = 0; l < indexes.length; l++) {
+                guessingWord[indexes[l]] = " " + letter + " ";
+            }
+        }
+    }
 
-        //create variable for letters remaining to be picked by user
-        //  var lettersRemaining = chosenAnimal.length;
+    //event listener for the keypress functionality
+    document.onkeyup = function(event) {
+        // var userKey = event.key;
 
-        //keypress begins gameplay
-        //press ANY key or SPECIFIC key
-        // document.onkeyup = function(event) {
-        //     var userGuess = event.key;
-        //     console.log(userGuess);
-        //     //the game begins if user presses 'p'
-        //     if(userGuess === "Enter") {
-        //         //display new hidden word
-        //         var wordBox = document.getElementById("box");
-        //         wordBox.innerHTML = answerArray.join(" ");
-        //     } else {
-        //         //create another loop to update the game
-        //         for(var j = 0; j < chosenAnimal.length; j++) {
-        //             //check if the user's guess matches any of the letters in the current array
-        //             if(chosenAnimal[j] === userGuess) {
-        //                 answerArray[j] = userGuess;
-        //                 // lettersRemaining -= 1;
-        //                 box.innerHTML = answerArray.join(" ");
-        //                 //check if wrong letter and detract points from user
-        //             } else {
-        //                 console.log("wrong");
-        //             }
-        //         }
-        //     }
-        // }
-
-
-
+        //insert the if statement for the END of the game to reset
+        //use a defined global variable set to false initially
         
+        //otherwise listen for keypresses between A and Z
+        if(event.keyCode >= 65 && event.keyCode <= 90) {
+            // console.log(userKey);
+            makeGuess(event.key.toLowerCase());
+        }
+    }
 
-        //create the game loop - what happens after the first keyup
-        //USING A WHILE LOOP
-        // while(lettersRemaining > 0) {
-        //     //show user the unguessed word on the page
-        //     var wordBox = document.getElementById("box");
-        //     box.innerHTML = answer.join(" ");
-        //     //get a guess from user
-        //     // var guess = prompt("Guess a letter!");
-        //     if(guess === null) {
-        //         //exit the game loop
-        //         break;
-        //     } else if(guess.length !== 1) {
-        //         alert("Please enter a single letter");
-        //     } else {
-        //         //create another loop to update the game
-        //         for(var j = 0; j < chosenAnimal.length; j++) {
-        //             //check if the user's guess matches any of the letters in the current array
-        //             if(chosenAnimal[j] === guess) {
-        //                 answer[j] = guess;
-        //                 lettersRemaining -= 1;
-        //             }
-        //         }
-        //     }
-        //     //end of the game loop
-        // }
-        // box.innerHTML = answer.join(" ");
-        // alert("good job, the answer was: " + chosenAnimal + "!");
-
-        // var box = document.getElementById("box");
-        // // box.innerHTML = answer;
-        // box.innerHTML = answer.join(" ");
+    //TEMPORARY CALLED FUNCTIONS TO TEST FUNCTIONALITY
+    startGame();
+    resetDisplay();
 
 
-
-    </script>
 
     
+    
+    </script>
     
 </body>
 </html>
