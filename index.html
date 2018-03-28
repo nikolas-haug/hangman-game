@@ -41,20 +41,30 @@
     var guessingWord = [];
 
     //variable for remaining attempts
-    var remainingAttempts = 10;
+    // var remainingAttempts = 10;
 
     //variable for the current word's index - EMPTY
     var currentWordIndex;
 
+    //variable to check the status of the game
+    var complete = false;
+
+
+// ========================================================================
+
    //function to clear variables and START game
    function startGame() {
+       //clear the display of word text
+       
        //use a random number to assign a value to the currentWordIndex using the length of the animals array
        currentWordIndex = Math.floor(Math.random() * (animals.length));
 
-       //clear the other arrays
+       //clear the other arrays / variables
        lettersGuessed = [];
 
        guessingWord = [];
+
+       remainingAttempts = 5;
 
        //make the guessingWord and clear the letters
        for(var i = 0; i < animals[currentWordIndex].length; i++) {
@@ -62,6 +72,7 @@
        }
        //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
        // TO DO
+       resetDisplay();
 
    }
 
@@ -74,7 +85,9 @@
        document.getElementById("attempts").innerText = remainingAttempts;
        document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
        //reset for when guesses are empty ?
-    //    if(remainingAttempts <= 0)
+       if(remainingAttempts < 1) {
+           startGame();
+       }
    }
 
     //FUNCTION FOR UPDATING THE HANGMAN IMAGE if I choose to include it - you would need to add a MAX TRIES variable if so
@@ -92,6 +105,7 @@
             lettersGuessed.push(letter);
             evaluateGuess(letter);
         }
+        checkSolution();
         resetDisplay();
     }
 
@@ -117,12 +131,23 @@
         }
     }
 
+    //check if the word has been solved
+    function checkSolution() {
+        if(guessingWord.indexOf(" _ ") === -1) {
+            startGame();
+        }
+    }
+
     //event listener for the keypress functionality
     document.onkeyup = function(event) {
         // var userKey = event.key;
 
         //insert the if statement for the END of the game to reset
         //use a defined global variable set to false initially
+        // if(complete) {
+        //     resetDisplay();
+        //     complete = false;
+        // }
         
         //otherwise listen for keypresses between A and Z
         if(event.keyCode >= 65 && event.keyCode <= 90) {
@@ -134,6 +159,7 @@
     //TEMPORARY CALLED FUNCTIONS TO TEST FUNCTIONALITY
     startGame();
     resetDisplay();
+    // resetDisplay();
 
 
 
