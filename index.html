@@ -5,20 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hangman</title>
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bitter|Fascinate+Inline" rel="stylesheet">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- custom css -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Hangman - Australian Animals</h1>
-    <div>
-        <h3 id="start">Press ENTER to start</h3>
-        <h2>Current Word</h2>
-        <h3 id="current-word"></h3>
+    <div class="container">
+        <div class="row py-4 mt-3 header">
+            <div class="col-12">
+                <h1>Hangman - Australian Animals</h1>
+            </div>
+        </div>
+        <div class="row justify-content-center py-4 my-1 row-custom">
+            <div class="col-5">
+                <h3 id="start">Press ENTER to start</h3>
+                <div class="container">
+                    <img class="img-fluid" id="main-img" src="" alt="">
+                    <h3 class="mt-3" id="game-over"></h3>
+                </div>
+            </div>
+            <div class="col-5">
+                <h2>Current Word</h2>
+                <h3 id="current-word"></h3>
+                <h4>guesses remaining</h4>
+                <h4 id="attempts"></h4>
+
+                <div class="container">
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <h5>letters already guessed</h5>
+                            <p id="letters-guessed"></p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
     </div>
-    <h4>guesses remaining</h4>
-    <h4 id="attempts"></h4>
-    <h5>letters already guessed</h5>
-    <p id="letters-guessed"></p>
+
+    
 
     <script type="text/javascript">
     
@@ -32,9 +62,24 @@
             "koala",
             "platypus",
             "echidna",
-            "pademelon",
-            "wombat"
+            "quokka",
+            "wombat",
+            "cassowary"
         ];
+
+    //images array
+    var imgs = [
+        "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg",
+        "assets/images/kookaburra-frida-bredesen-315457-unsplash.jpg",
+        "assets/images/kangaroo-ivan-lojko-53308-unsplash.jpg",
+        "assets/images/wallaby-suzie-maclean-566760-unsplash.jpg",
+        "assets/images/koala-vita-vilcina-274033-unsplash.jpg",
+        "assets/images/platypus-drawing.png",
+        "assets/images/echidna-jacob-dyer-368949-unsplash.jpg",
+        "assets/images/quokka-christine-mendoza-527608-unsplash.jpg",
+        "assets/images/wombat.png",
+        "assets/images/cassowary-david-clode-314102-unsplash.jpg"
+    ]
 
     //empty arrays for LETTERS GUESSED and THE CURRENT WORD
     var lettersGuessed = [];
@@ -49,6 +94,10 @@
 
     //variable to check the status of the game
     var complete = false;
+    // var showAnimal = false;
+
+    //variables for the DOM
+    var image = document.getElementById("main-img");
 
 
 // ========================================================================
@@ -57,6 +106,10 @@
 
    //function to clear variables and START game
    function startGame() {
+       document.getElementById("start").innerText = "Press Enter to start a new game";
+
+       image.src = imgs[3];
+
        //clear the display of word text
        
        //use a random number to assign a value to the currentWordIndex using the length of the animals array
@@ -74,6 +127,7 @@
        for(var i = 0; i < animals[currentWordIndex].length; i++) {
            guessingWord.push(" _ ");
        }
+       console.log(animals[currentWordIndex]);
        //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
        // TO DO
        resetDisplay();
@@ -81,8 +135,9 @@
    }
 
    function resetDisplay() {
-       //CLEAR THE PRESS ENTER SCREEN
+       //CLEAR THE PRESS ENTER SCREEN and THE GAME OVER DISPLAY
        document.getElementById("start").innerText = "";
+       document.getElementById("game-over").innerText = "";
        //clear the space and display the current word with blanks
        document.getElementById("current-word").innerText = "";
        for(var j = 0; j < guessingWord.length; j++) {
@@ -97,8 +152,22 @@
             //FIX THIS SO THE GAME PAUSES AND PROMPTS THE PLAYER FOR A RESET
             //This restarts the game loop
             document.getElementById("start").innerText = "Press Enter to start a new game";
+            image.src = "assets/images/fish-david-clode-607393-unsplash.jpg";
+            document.getElementById("game-over").innerText = "Game Over!";
             complete = true;
        }
+       //if there are no more blanks in the array, restart the game
+       if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
+            console.log("you win!")
+            image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+            //depending on which animal is chosen, display that image when player wins
+                // if(animals[currentWordIndex] === "emu") {
+                //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                // }
+            // startGame();
+            // complete = true;
+        }
+       
    }
 
     //FUNCTION FOR UPDATING THE HANGMAN IMAGE if I choose to include it - you would need to add a MAX TRIES variable if so
@@ -144,19 +213,26 @@
     function checkSolution() {
         //if there are no more blanks in the array, restart the game
         if(guessingWord.indexOf(" _ ") === -1) {
+            console.log("you win!")
+            //depending on which animal is chosen, display that image when player wins
+                if(animals[currentWordIndex] === "emu") {
+                    image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                }
             startGame();
+            // complete = true;
         }
     }
+
+    //NEW FUNCTION to display animal after a win
+    // function showAnimal() {
+    //     if(showAnimal && ) {
+
+    //     }
+    // }
 
     //event listener for the keypress functionality
     document.onkeyup = function(event) {
         var userKey = event.key;
-
-        // FIX BUG HERE
-        // if(userKey === "Enter") {
-        //     startGame();
-        //     resetDisplay();
-        // }
 
         if(complete && userKey === "Enter") {
             startGame();
