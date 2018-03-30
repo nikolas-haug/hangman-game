@@ -30,6 +30,10 @@ h2, h3, h4, h5, p {
     font-family: 'Bitter', serif;
 }
 
+h2 {
+    text-shadow: 2px 2px grey;
+}
+
 #attempts, #letters-guessed {
     color: red;
 }

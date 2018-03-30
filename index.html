@@ -22,16 +22,16 @@
         </div>
         <div class="row justify-content-center py-4 my-1 row-custom">
             <div class="col-5">
-                <h3 id="start">Press Enter</h3>
-                <div class="container">
+                <h3 id="start"></h3>
+                <div class="container mt-2">
                     <img class="img-fluid" id="main-img" src="" alt="">
                     <h3 class="mt-3" id="game-over"></h3>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-5 p-4">
                 <h2>Current Word</h2>
                 <h3 id="current-word"></h3>
-                <h4>guesses remaining</h4>
+                <h4 class="mt-5">guesses remaining</h4>
                 <h4 id="attempts"></h4>
 
                 <div class="container">
@@ -110,7 +110,7 @@
    //function to clear variables and START game
    function startGame() {
 
-                image.src = imgs[3];
+                image.src = "assets/images/gumtree-jeremy-bishop-556948-unsplash.jpg";
 
                 //clear the display of word text
                 document.getElementById("start").innerText = "press any key to start"
@@ -165,17 +165,17 @@
                   }
                         //FIX THIS BECAUSE IT MIGHT BE A DUPLICATE ON THE checkSolution FUNCTION
                         //if there are no more blanks in the array, restart the game
-                        if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
-                                console.log("you win!")
-                                document.getElementById("start").innerText = "Press Enter to start a new game";
-                                image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-                                //depending on which animal is chosen, display that image when player wins
-                                    // if(animals[currentWordIndex] === "emu") {
-                                    //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-                                    // }
-                                // startGame();
-                                complete = true;
-                            }
+                        // if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
+                        //         console.log("you win!")
+                        //         document.getElementById("start").innerText = "Press Enter to start a new game";
+                        //         image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                        //         //depending on which animal is chosen, display that image when player wins
+                        //             // if(animals[currentWordIndex] === "emu") {
+                        //             //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                        //             // }
+                        //         // startGame();
+                        //         complete = true;
+                        //     }
    }
 
     function makeGuess(letter) {
@@ -217,12 +217,38 @@
         //if there are no more blanks in the array, restart the game
         if(guessingWord.indexOf(" _ ") === -1) {
             console.log("you win!")
+            document.getElementById("start").innerText = "Press Enter to start a new game";
             //depending on which animal is chosen, display that image when player wins
                 if(animals[currentWordIndex] === "emu") {
-                    image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                    image.src = imgs[0];
                 }
-            // startGame();
-            // Update the start game text
+                if(animals[currentWordIndex] === "kookaburra") {
+                    image.src = imgs[1];
+                }
+                if(animals[currentWordIndex] === "kangaroo") {
+                    image.src = imgs[2];
+                }
+                if(animals[currentWordIndex] === "wallaby") {
+                    image.src = imgs[3];
+                }
+                if(animals[currentWordIndex] === "koala") {
+                    image.src = imgs[4];
+                }
+                if(animals[currentWordIndex] === "platypus") {
+                    image.src = imgs[5];
+                }
+                if(animals[currentWordIndex] === "echidna") {
+                    image.src = imgs[6];
+                }
+                if(animals[currentWordIndex] === "quokka") {
+                    image.src = imgs[7];
+                }
+                if(animals[currentWordIndex] === "wombat") {
+                    image.src = imgs[8];
+                }
+                if(animals[currentWordIndex] === "cassowary") {
+                    image.src = imgs[9];
+                }
             complete = true;
         }
     }
