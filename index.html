@@ -15,11 +15,13 @@
 <body>
 
     <div class="container">
+        <!-- header -->
         <div class="row py-4 mt-3 header">
             <div class="col-12">
                 <h1>Hangman - Australian Animals</h1>
             </div>
         </div>
+        <!-- main -->
         <div class="row justify-content-center py-4 my-1 row-custom">
             <div class="col-5">
                 <h3 id="start"></h3>
@@ -53,10 +55,10 @@
     <script type="text/javascript">
     
     //make the GLOBAL variables
-    //create the global array of animal words to randomly select
 
     // TO DO make an object 
 
+    //array of animals
     var animals = [
             "emu",
             "kookaburra",
@@ -86,18 +88,15 @@
 
     //empty arrays for LETTERS GUESSED and THE CURRENT WORD
     var lettersGuessed = [];
+
     //empty array for the current randomly selected word
     var guessingWord = [];
-
-    //variable for remaining attempts
-    // var remainingAttempts = 10;
 
     //global variable for the current word's index - EMPTY
     var currentWordIndex;
 
     //variable to check the status of the game
     var complete = false;
-    // var showAnimal = false;
 
     //variables for the DOM
     var image = document.getElementById("main-img");
@@ -110,7 +109,7 @@
    //function to clear variables and START game
    function startGame() {
 
-                image.src = "assets/images/gumtree-jeremy-bishop-556948-unsplash.jpg";
+                image.src = "assets/images/gumtree-surya-prakosa-312730-unsplash.jpg";
 
                 //clear the display of word text
                 document.getElementById("start").innerText = "press any key to start"
@@ -125,22 +124,21 @@
                 //separate array to store the current word randomly selected
                 guessingWord = [];
 
+                //starting value for number of guesses
                 remainingAttempts = 5;
 
                 //make the guessingWord and clear the letters
                 for(var i = 0; i < animals[currentWordIndex].length; i++) {
                     guessingWord.push(" _ ");
                 }
-                console.log(animals[currentWordIndex]);
+                // console.log(animals[currentWordIndex]);
                 //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
                 // TO DO
                 resetDisplay();
             } 
 
+    //function to udate the HTML
    function resetDisplay() {
-       //CLEAR THE PRESS ENTER SCREEN and THE GAME OVER DISPLAY
-       //document.getElementById("start").innerText = "";
-
        document.getElementById("game-over").innerText = "";
             //clear the space and display the current word with blanks
             document.getElementById("current-word").innerText = "";
@@ -151,7 +149,6 @@
                 document.getElementById("attempts").innerText = remainingAttempts;
                 //display the lettersGuessed array - which begins empty
                 document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
-                    //reset for when guesses are empty 
 
                     // TO DO make a separate function - add animal pictures array
 
@@ -162,25 +159,13 @@
                             image.src = "assets/images/fish-david-clode-607393-unsplash.jpg";
                             document.getElementById("game-over").innerText = "Game Over!";
                             complete = true;
-                  }
-                        //FIX THIS BECAUSE IT MIGHT BE A DUPLICATE ON THE checkSolution FUNCTION
-                        //if there are no more blanks in the array, restart the game
-                        // if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
-                        //         console.log("you win!")
-                        //         document.getElementById("start").innerText = "Press Enter to start a new game";
-                        //         image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-                        //         //depending on which animal is chosen, display that image when player wins
-                        //             // if(animals[currentWordIndex] === "emu") {
-                        //             //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-                        //             // }
-                        //         // startGame();
-                        //         complete = true;
-                        //     }
-   }
+                    }
+            }
 
+    //function to check letter guessed and clear the HTML at the beginning of a game
     function makeGuess(letter) {
         document.getElementById("start").innerText = "";
-        //if letter chosen by player is not in the letters already guessed array, then add to it - and then evaluate the letter in relation to the chosen word
+        //check if letter is in lettersGuessed array, if not call evaluateGuess function
         if(lettersGuessed.indexOf(letter) === -1) {
             lettersGuessed.push(letter);
             evaluateGuess(letter);
@@ -190,11 +175,10 @@
         resetDisplay();
     }
 
-    //if word not already picked, find current word's letters and replace the blanks in display with chosen letter
+    //function to check letter guess in relation to the indexes of the picked word
     function evaluateGuess(letter) {
         //make an empty array to store word indexes in - HELPS SOLVE THE MULTIPLE LETTERS PROBLEM
         var indexes = [];
-
         //loop through word to find ALL indexes of letter guessed
         for(var k = 0; k < animals[currentWordIndex].length; k++) {
             if(animals[currentWordIndex][k] === letter) {
@@ -216,7 +200,7 @@
     function checkSolution() {
         //if there are no more blanks in the array, restart the game
         if(guessingWord.indexOf(" _ ") === -1) {
-            console.log("you win!")
+            // console.log("you win!")
             document.getElementById("start").innerText = "Press Enter to start a new game";
             //depending on which animal is chosen, display that image when player wins
                 if(animals[currentWordIndex] === "emu") {
@@ -249,6 +233,7 @@
                 if(animals[currentWordIndex] === "cassowary") {
                     image.src = imgs[9];
                 }
+            //update game status
             complete = true;
         }
     }
@@ -256,20 +241,19 @@
     //event listener for the keypress functionality
     document.onkeyup = function(event) {
         var userKey = event.key;
-
+        //listen only for Enter keypress
         if(complete && userKey === "Enter") {
-            
             startGame();
             complete = false;
         }
         //otherwise listen for keypresses between A and Z
         if(event.keyCode >= 65 && event.keyCode <= 90 && !complete) {
-            // console.log(userKey);
+            //call function and start the game loop (makeGuess ==> evaluateGuess ==> checkSolution)
             makeGuess(event.key.toLowerCase());
         }
     }
 
-    //TEMPORARY CALLED FUNCTIONS TO TEST FUNCTIONALITY
+    //call function to start game on page load
     startGame();
     
     </script>

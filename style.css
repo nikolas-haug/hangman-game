@@ -31,9 +31,14 @@ h2, h3, h4, h5, p {
 }
 
 h2 {
-    text-shadow: 2px 2px grey;
+    text-shadow: 1.5px 1.5px #828282;
+    letter-spacing: 1.2px;
+}
+
+h4, h5 {
+    letter-spacing: 1.2px;
 }
 
 #attempts, #letters-guessed {
-    color: red;
+    color: #7F0E0E;
 }
