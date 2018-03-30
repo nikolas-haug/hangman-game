@@ -22,7 +22,7 @@
         </div>
         <div class="row justify-content-center py-4 my-1 row-custom">
             <div class="col-5">
-                <h3 id="start">Press ENTER to start</h3>
+                <h3 id="start"></h3>
                 <div class="container">
                     <img class="img-fluid" id="main-img" src="" alt="">
                     <h3 class="mt-3" id="game-over"></h3>
@@ -54,6 +54,9 @@
     
     //make the GLOBAL variables
     //create the global array of animal words to randomly select
+
+    // TO DO make an object 
+
     var animals = [
             "emu",
             "kookaburra",
@@ -106,75 +109,72 @@
 
    //function to clear variables and START game
    function startGame() {
-       document.getElementById("start").innerText = "Press Enter to start a new game";
 
-       image.src = imgs[3];
+                image.src = imgs[3];
 
-       //clear the display of word text
-       
-       //use a random number to assign a value to the currentWordIndex using the length of the animals array
-       currentWordIndex = Math.floor(Math.random() * (animals.length));
+                //clear the display of word text
+                document.getElementById("start").innerText = "";
 
-       //clear the other arrays / variables
-       lettersGuessed = [];
+                //use a random number to assign a value to the currentWordIndex using the length of the animals array
+                currentWordIndex = Math.floor(Math.random() * (animals.length));
 
-       //separate array to store the current word randomly selected
-       guessingWord = [];
+                //clear the other arrays / variables
+                lettersGuessed = [];
 
-       remainingAttempts = 5;
+                //separate array to store the current word randomly selected
+                guessingWord = [];
 
-       //make the guessingWord and clear the letters
-       for(var i = 0; i < animals[currentWordIndex].length; i++) {
-           guessingWord.push(" _ ");
-       }
-       console.log(animals[currentWordIndex]);
-       //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
-       // TO DO
-       resetDisplay();
+                remainingAttempts = 5;
 
-   }
+                //make the guessingWord and clear the letters
+                for(var i = 0; i < animals[currentWordIndex].length; i++) {
+                    guessingWord.push(" _ ");
+                }
+                console.log(animals[currentWordIndex]);
+                //CALL FUNCTION TO RESET DISPLAY AND SHOW WORD BLANKS
+                // TO DO
+                resetDisplay();
+            } 
 
    function resetDisplay() {
        //CLEAR THE PRESS ENTER SCREEN and THE GAME OVER DISPLAY
-       document.getElementById("start").innerText = "";
-       document.getElementById("game-over").innerText = "";
-       //clear the space and display the current word with blanks
-       document.getElementById("current-word").innerText = "";
-       for(var j = 0; j < guessingWord.length; j++) {
-           document.getElementById("current-word").innerText += guessingWord[j];
-       }
-       //show the remaining attempts the player has to guess the word
-       document.getElementById("attempts").innerText = remainingAttempts;
-       //display the lettersGuessed array - which begins empty
-       document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
-       //reset for when guesses are empty 
-       if(remainingAttempts < 1) {
-            //FIX THIS SO THE GAME PAUSES AND PROMPTS THE PLAYER FOR A RESET
-            //This restarts the game loop
-            document.getElementById("start").innerText = "Press Enter to start a new game";
-            image.src = "assets/images/fish-david-clode-607393-unsplash.jpg";
-            document.getElementById("game-over").innerText = "Game Over!";
-            complete = true;
-       }
-       //if there are no more blanks in the array, restart the game
-       if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
-            console.log("you win!")
-            image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-            //depending on which animal is chosen, display that image when player wins
-                // if(animals[currentWordIndex] === "emu") {
-                //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
-                // }
-            // startGame();
-            // complete = true;
-        }
-       
-   }
+       //document.getElementById("start").innerText = "";
 
-    //FUNCTION FOR UPDATING THE HANGMAN IMAGE if I choose to include it - you would need to add a MAX TRIES variable if so
-    // Updates the image depending on how many guesses
-    // function updateHangmanImage() {
-    //     document.getElementById("hangmanImage").src = "assets/images/" + (maxTries - remainingGuesses) + ".png";
-    // };
+       document.getElementById("game-over").innerText = "";
+            //clear the space and display the current word with blanks
+            document.getElementById("current-word").innerText = "";
+            for(var j = 0; j < guessingWord.length; j++) {
+                document.getElementById("current-word").innerText += guessingWord[j];
+            }
+                //show the remaining attempts the player has to guess the word
+                document.getElementById("attempts").innerText = remainingAttempts;
+                //display the lettersGuessed array - which begins empty
+                document.getElementById("letters-guessed").innerText = lettersGuessed.join(" ");
+                    //reset for when guesses are empty 
+
+                    // TO DO make a separate function - add animal pictures array
+
+                    if(remainingAttempts < 1) {
+                            //FIX THIS SO THE GAME PAUSES AND PROMPTS THE PLAYER FOR A RESET
+                            //This restarts the game loop
+                            document.getElementById("start").innerText = "Press Enter to start a new game";
+                            image.src = "assets/images/fish-david-clode-607393-unsplash.jpg";
+                            document.getElementById("game-over").innerText = "Game Over!";
+                            complete = true;
+                  }
+                        //FIX THIS BECAUSE IT MIGHT BE A DUPLICATE ON THE checkSolution FUNCTION
+                        //if there are no more blanks in the array, restart the game
+                        if(guessingWord.indexOf(" _ ") === -1 && animals[currentWordIndex] === "emu") {
+                                console.log("you win!")
+                                image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                                //depending on which animal is chosen, display that image when player wins
+                                    // if(animals[currentWordIndex] === "emu") {
+                                    //     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
+                                    // }
+                                // startGame();
+                                complete = true;
+                            }
+   }
 
     function makeGuess(letter) {
         //if letter chosen by player is not in the letters already guessed array, then add to it - and then evaluate the letter in relation to the chosen word
@@ -218,28 +218,23 @@
                 if(animals[currentWordIndex] === "emu") {
                     image.src = "assets/images/emu-soren-astrup-jorgensen-336685-unsplash.jpg"
                 }
-            startGame();
-            // complete = true;
+            // startGame();
+            // Update the start game text
+            complete = true;
         }
     }
-
-    //NEW FUNCTION to display animal after a win
-    // function showAnimal() {
-    //     if(showAnimal && ) {
-
-    //     }
-    // }
 
     //event listener for the keypress functionality
     document.onkeyup = function(event) {
         var userKey = event.key;
 
         if(complete && userKey === "Enter") {
+            
             startGame();
             complete = false;
         }
         //otherwise listen for keypresses between A and Z
-        if(event.keyCode >= 65 && event.keyCode <= 90) {
+        if(event.keyCode >= 65 && event.keyCode <= 90 && !complete) {
             // console.log(userKey);
             makeGuess(event.key.toLowerCase());
         }
